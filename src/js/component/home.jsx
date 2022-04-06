@@ -7,6 +7,19 @@ const Home = () => {
 	const sent = (del) => {
 		const dele = list.filter((lists, index) => index !== del);
 		setList(dele);
+		fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/liciagaangelo",
+			{
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(dele),
+				redirect: "follow",
+			}
+		)
+			.then((response) => {
+				response.status === 200 ? setList(dele) : "";
+			})
+			.catch((error) => console.log("error", error));
 	};
 
 	const addItem = (secitem) => {
@@ -38,11 +51,9 @@ const Home = () => {
 			.then((response) => response.json())
 			.then((result) => {
 				setList(result);
-				console.log(list);
 			})
 			.catch((error) => console.log("error", error));
 	}, []);
-	console.log(list);
 	return (
 		<>
 			<div>
@@ -52,12 +63,12 @@ const Home = () => {
 				<input
 					type="text"
 					className="form-control"
-					placeholder=" "
+					placeholder="What's next?"
 					onChange={(e) => setItem(e.target.value)}
 					value={item}
 				/>
 				<a
-					onClick={() => addItem(list)}
+					onClick={() => addItem(item)}
 					type="button"
 					className="btn btn-primary"
 					id="basic-addon1">
@@ -67,7 +78,19 @@ const Home = () => {
 			<ul>
 				{list &&
 					list.map((lists, index) => {
-						return <li key={index}>{lists.label}</li>;
+						return (
+							<li key={index}>
+								{lists.label}
+								<button
+									type="button"
+									className="btn btn-danger"
+									onClick={() => {
+										sent(index);
+									}}>
+									X
+								</button>
+							</li>
+						);
 					})}
 			</ul>
 		</>
