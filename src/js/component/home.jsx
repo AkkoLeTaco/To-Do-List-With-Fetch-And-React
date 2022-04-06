@@ -68,7 +68,12 @@ const Home = () => {
 					value={item}
 				/>
 				<a
-					onClick={() => addItem(item)}
+					onClick={() => {
+						if (item !== "") {
+							addItem(item);
+							setItem(" ");
+						}
+					}}
 					type="button"
 					className="btn btn-primary"
 					id="basic-addon1">
