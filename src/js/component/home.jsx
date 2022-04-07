@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-
+import "../../styles/index.css";
 //create your first component
 const Home = () => {
 	const [item, setItem] = useState("");
 	const [list, setList] = useState([]);
+
+	const cross = (index) => {
+		let crossOut = [...list];
+		crossOut[index].done = !crossOut[index].done;
+		setList(crossOut);
+	};
 	const sent = (del) => {
 		const dele = list.filter((lists, index) => index !== del);
 		setList(dele);
@@ -85,7 +91,17 @@ const Home = () => {
 					list.map((lists, index) => {
 						return (
 							<li key={index}>
-								{lists.label}
+								<span
+									className={
+										lists.done ? "crossed-line" : ""
+									}>
+									{lists.label}
+								</span>
+								<button
+									type="button"
+									onClick={() => cross(index)}>
+									done
+								</button>
 								<button
 									type="button"
 									className="btn btn-danger"
